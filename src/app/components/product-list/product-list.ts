@@ -1,10 +1,12 @@
+import { NgClass, NgStyle } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
-  imports: [RouterLink],
+  imports: [RouterLink, NgClass, NgStyle, FormsModule],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css'
 })
@@ -41,15 +43,19 @@ export class ProductList implements OnInit {
   }
 
   deleteProduct(id: number) {
-    this.http.delete(`http://localhost:4000/products/${id}`).subscribe({
-      next: () => {
-        alert("The Product is deleted successfully");
-        this.getProducts(); // optionally refresh list
-      },
-      error: (err) => {
-        console.log("Failed to delete the product", err);
-      }
-    });
+    const del = confirm("Are you sure to delete the product")
+    if (del) {
+      this.http.delete(`http://localhost:4000/products/${id}`).subscribe({
+        next: () => {
+          alert("The Product is deleted successfully");
+          this.getProducts();
+        },
+        error: (err) => {
+          console.log("Failed to delete the product", err);
+        }
+      });
+    }
+
 
   }
 
@@ -58,7 +64,7 @@ export class ProductList implements OnInit {
     this.isEditing = true;
   }
 
-  updateProduct(product: any) {
+  updateProduct() {
     if (!this.productObj.id) {
       alert("Invalid product ID.");
       return;

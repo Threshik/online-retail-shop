@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-product',
@@ -10,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class AddProduct implements OnInit {
   http = inject(HttpClient)
+  router = inject(Router)
   userList: any[] = [];
   productObj: any = {
     "id": 0,
@@ -39,6 +41,9 @@ export class AddProduct implements OnInit {
           "category": "",
           "image": ""
         }
+
+        //like when we add a product after adding it we get a alert and then it navigates to the product list page
+        this.router.navigate(['product-list'])
 
       },
       error: (err) => {
