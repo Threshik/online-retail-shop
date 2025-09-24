@@ -1,27 +1,63 @@
-import { Component, Signal, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject, OnInit, Signal, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-product',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './add-product.html',
   styleUrl: './add-product.css'
 })
-export class AddProduct {
-  // showProductAddMessage() {
-  //   alert("Product is added")
-  // }
+export class AddProduct implements OnInit {
+  http = inject(HttpClient)
+  userList: any[] = [];
+  productObj: any = {
+    "id": 0,
+    "title": "",
+    "price": 0,
+    "description": "",
+    "category": "",
+    "image": ""
+  }
+  loading = true;
 
-  // changeCityName() {
-  //   alert("City name changed")
-  // }
+  ngOnInit(): void {
+    this.loading = false;
+  }
 
-  // //normal variable
-  // firstName: string = "Threshi";
-  // //method 1 for creating the signal
-  // courseName = signal<string>("CSE")
-  // // method2 for creating the signal
-  // courseDuration = signal("1 week")
 
-  // city: string[] = ["apple", "banana", "kiwi"]
+
+  addProducts() {
+    this.http.post("http://localhost:4000/products", this.productObj).subscribe({
+      next: (res: any) => {
+        alert("The product added successfully");
+        this.productObj = {
+          "id": 0,
+          "title": "",
+          "price": 0.1,
+          "description": "",
+          "category": "",
+          "image": ""
+        }
+
+      },
+      error: (err) => {
+        console.log("Creation of product failed")
+      }
+    })
+  }
+
+  onReset() {
+    this.productObj = {
+      "id": 0,
+      "title": "",
+      "price": 0,
+      "description": "",
+      "category": "",
+      "image": ""
+    }
+  }
+
+
 
 }

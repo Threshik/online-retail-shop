@@ -9,14 +9,33 @@
     @for (product of productList; track product.id) {
     <div class="col-md-4 mb-4">
         <div class="card h-100 shadow-sm">
+            <!-- property binding  -->
             <img [src]="product.image" class="card-img-top p-3" [alt]="product.title"
                 style="height: 250px; object-fit: contain;" />
 
             <div class="card-body d-flex flex-column">
+                <!-- interpolation -->
                 <h5 class="card-title">{{ product.title }}</h5>
                 <p class="card-text text-truncate">{{ product.description }}</p>
                 <p class="fw-bold text-success mb-2">$ {{ product.price }}</p>
+                <div class="d-flex justify-content-between mt-auto">
+                    <button class="btn btn-secondary">Add to Cart</button>
+                    <div class="d-flex mt-auto" style="gap: 0.5rem;">
+                        <button class="btn btn-link text-warning p-0" title="Update" (click)="updateProduct(product)">
+                            <i class="bi bi-pencil-square" style="font-size: 1.2rem;"></i>
+                        </button>
+
+                        <button class="btn btn-link text-danger p-0" title="Delete" (click)="deleteProduct(product.id)">
+                            <i class="bi bi-trash" style="font-size: 1.2rem;"></i>
+                        </button>
+                    </div>
+
+
+                </div>
+
+
             </div>
+
         </div>
     </div>
     }

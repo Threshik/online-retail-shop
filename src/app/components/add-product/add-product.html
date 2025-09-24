@@ -1,15 +1,53 @@
-<p>add-product works!</p>
-<!-- <button class="btn bg-secondary" (click)="showProductAddMessage()">Show Message</button>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                Add Product
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <label for="">Id</label>
+                        <input type="text" [(ngModel)]="productObj.id" class="form-control">
+                    </div>
+                    <div class="col-6">
+                        <label for="">Title</label>
+                        <input type="text" [(ngModel)]="productObj.title" class="form-control">
+                    </div>
+                    <div class="col-6">
+                        <label for="">Price</label>
+                        <input type="text" [(ngModel)]="productObj.price" class="form-control">
+                    </div>
+                    <div class="col-6">
+                        <label for="">Description</label>
+                        <input type="text" [(ngModel)]="productObj.description" class="form-control">
+                    </div>
+                    <div class="col-6">
+                        <label for="">Category</label>
+                        <input type="text" [(ngModel)]="productObj.category" class="form-control">
+                    </div>
+                    <div class="col-6">
+                        <label for="">Image</label>
+                        <input type="text" [(ngModel)]="productObj.image" class="form-control">
+                    </div>
 
-<select (change)="changeCityName()">
-    <option value="">Pune</option>
-    <option value="">Erode</option>
-    <option value="">Chennai</option>
-</select>
-@for (item of city; track $index) {
-<table>
-    <tr>
-        <td>{{item}}</td>
-    </tr>
-</table>
-} -->
+                </div>
+                <div class="row pt-3">
+                    <div class="col-6 text-center">
+                        <button class="btn btn-secondary" (click)="onReset()">Reset</button>
+                    </div>
+                    <div class="col-6 text-center">
+                        @if(productObj.id===0){
+                        <button class="btn btn-primary" (click)="addProducts()">Save</button>
+                        }
+                        @else {
+                        <button class="btn btn-secondary" (click)="addProducts()">Update</button>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
