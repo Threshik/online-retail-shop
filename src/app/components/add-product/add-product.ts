@@ -14,11 +14,9 @@ export class AddProduct implements OnInit {
   router = inject(Router)
   userList: any[] = [];
   productObj: any = {
-    "id": 0,
-    "title": "",
+    "name": "",
     "price": 0,
     "description": "",
-    "category": "",
     "image": ""
   }
   loading = true;
@@ -30,15 +28,13 @@ export class AddProduct implements OnInit {
 
 
   addProducts() {
-    this.http.post("http://localhost:4000/products", this.productObj).subscribe({
+    this.http.post("http://localhost:8080/api/products", this.productObj).subscribe({
       next: (res: any) => {
         alert("The product added successfully");
         this.productObj = {
-          "id": 0,
-          "title": "",
-          "price": 0.1,
+          "name": "",
+          "price": 0,
           "description": "",
-          "category": "",
           "image": ""
         }
 
@@ -54,11 +50,9 @@ export class AddProduct implements OnInit {
 
   onReset() {
     this.productObj = {
-      "id": 0,
-      "title": "",
+      "name": "",
       "price": 0,
       "description": "",
-      "category": "",
       "image": ""
     }
   }

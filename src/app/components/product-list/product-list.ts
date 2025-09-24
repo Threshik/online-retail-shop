@@ -2,7 +2,7 @@ import { NgClass, NgStyle } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -13,14 +13,15 @@ import { RouterLink } from '@angular/router';
 export class ProductList implements OnInit {
   http = inject(HttpClient);
   productList: any[] = [];
+  cartItemList: any[] = [];
   loading = true;
   isEditing = false;
+  router = inject(Router)
   productObj: any = {
-    "id": 0,
-    "title": "",
+
+    "name": "",
     "price": 0,
     "description": "",
-    "category": "",
     "image": ""
   }
 
@@ -30,7 +31,7 @@ export class ProductList implements OnInit {
   }
 
   getProducts() {
-    this.http.get("http://localhost:4000/products").subscribe({
+    this.http.get("http://localhost:8080/api/products").subscribe({
       next: (result: any) => {
         this.productList = result;
         this.loading = false;
@@ -42,10 +43,25 @@ export class ProductList implements OnInit {
     })
   }
 
+  getAllCartItems() {
+    this.http.get("http://localhost:8080/api/cart").subscribe({
+      next: (res: any) => {
+        this.cartItemList = res;
+        this.loading = false;
+
+      },
+      error: (err) => {
+        console.log('Error fetching cart items', err);
+        this.loading = false;
+      }
+
+    })
+  }
+
   deleteProduct(id: number) {
     const del = confirm("Are you sure to delete the product")
     if (del) {
-      this.http.delete(`http://localhost:4000/products/${id}`).subscribe({
+      this.http.delete(`http://localhost:8080/api/products/${id}`).subscribe({
         next: () => {
           alert("The Product is deleted successfully");
           this.getProducts();
@@ -70,7 +86,7 @@ export class ProductList implements OnInit {
       return;
     }
 
-    this.http.put(`http://localhost:4000/products/${this.productObj.id}`, this.productObj).subscribe({
+    this.http.put(`http://localhost:8080/api/products/${this.productObj.id}`, this.productObj).subscribe({
       next: (res: any) => {
         alert("The product updated successfully");
         this.isEditing = false;
@@ -88,13 +104,29 @@ export class ProductList implements OnInit {
   closeDialog() {
     this.isEditing = false;
     this.productObj = {
-      id: 0,
-      title: "",
-      price: 0,
-      description: "",
-      category: "",
-      image: ""
+      "name": "",
+      "price": 0,
+      "description": "",
+      "image": ""
     };
+  }
+
+  addToCart(id: number) {
+    const quantity = 1;
+    this.http.post(`http://localhost:8080/api/cart/add?productId=${id}&quantity=${quantity}`, null).subscribe({
+      next: (res: any) => {
+        alert(res.message);
+
+      },
+      error: (err) => {
+        console.log("Failed to add cart item", err);
+      }
+    });
+
+
+
+
+
   }
 }
 

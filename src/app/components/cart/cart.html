@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-12 d-flex justify-content-end mb-3 gap-4">
+        <button class="btn btn-outline-danger" (click)="clearCart()">Clear Cart</button>
+        <button class="btn btn-outline-secondary" (click)="navigate()">Checkout</button>
+    </div>
+
+    @if (cartItemList.length > 0) {
+
+    @for (item of cartItemList; track $index) {
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <img [src]="item.product.image" class="card-img-top p-3" [alt]="item.product.name"
+                style="height: 250px; object-fit: contain;" />
+
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ item.product.name }}</h5>
+                <p class="card-text text-truncate">{{ item.product.description }}</p>
+                <p class="fw-bold text-success mb-2">$ {{ item.product.price }}</p>
+
+                <div class="mt-auto d-flex align-items-center gap-2">
+                    <input type="number" min="1" [(ngModel)]="item.quantity"
+                        (change)="updateQuantity(item.id, item.quantity)" style="width: 70px;"
+                        class="form-control form-control-sm" />
+                    <button class="btn btn-outline-danger btn-sm" (click)="deleteCartItem(item.id)">
+                        Remove
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    }
+
+    <div class="col-12 mt-4 d-flex justify-content-center">
+        <div class="border p-3 rounded shadow-sm text-center" style="min-width: 300px;">
+            <strong>Items:</strong> {{ totalItems }} &nbsp;|&nbsp;
+            <strong>Total Quantity:</strong> {{ totalQuantity }} &nbsp;|&nbsp;
+            <strong>Total Price:</strong> ${{ totalPrice.toFixed(2) }}
+        </div>
+    </div>
+    } @else {
+    <div class="text-center mt-5 w-100">
+        <h4>Your cart is empty</h4>
+    </div>
+    }
+</div>
