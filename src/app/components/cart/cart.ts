@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -19,7 +20,7 @@ export class Cart implements OnInit {
   }
 
   showCartItems() {
-    this.http.get("http://localhost:8080/api/cart").subscribe({
+    this.http.get(`${environment.apiBaseUrl}/cart`).subscribe({
       next: (res: any) => {
         this.cartItemList = res;
       },
@@ -31,7 +32,7 @@ export class Cart implements OnInit {
   }
 
   updateQuantity(cartItemId: number, newQuantity: number) {
-    this.http.put(`http://localhost:8080/api/cart/update`, {
+    this.http.put(`${environment.apiBaseUrl}/cart/update`, {
       cartItemId,
       quantity: newQuantity
     }).subscribe({
@@ -41,7 +42,7 @@ export class Cart implements OnInit {
   }
 
   deleteCartItem(id: number) {
-    this.http.delete(`http://localhost:8080/api/cart/${id}`).subscribe({
+    this.http.delete(`${environment.apiBaseUrl}/cart/${id}`).subscribe({
       next: (response: any) => {
         alert('Cart Item deleted!')
         this.showCartItems();
@@ -52,7 +53,7 @@ export class Cart implements OnInit {
   }
 
   clearCart() {
-    this.http.delete("http://localhost:8080/api/cart/clear").subscribe({
+    this.http.delete(`${environment.apiBaseUrl}/cart/clear`).subscribe({
       next: (res: any) => {
         alert("Cart cleared Successfully")
         this.showCartItems();

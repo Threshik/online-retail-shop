@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-add-product',
@@ -33,7 +34,7 @@ export class AddProduct implements OnInit {
       return;
     }
     const formValue = this.productAddForm.value;
-    this.http.post("http://localhost:8080/api/products", formValue).subscribe({
+    this.http.post(`${environment.apiBaseUrl}/products`, formValue).subscribe({
       next: (res: any) => {
         alert("The product added successfully");
         //like when we add a product after adding it we get a alert and then it navigates to the product list page

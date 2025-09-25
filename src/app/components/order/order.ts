@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-order',
@@ -26,7 +27,7 @@ export class Order implements OnInit {
 
 
     loadCartItems() {
-        this.http.get("http://localhost:8080/api/cart").subscribe({
+        this.http.get(`${environment.apiBaseUrl}/cart`).subscribe({
             next: (res: any) => {
                 this.cartItems = res;
                 this.calculateTotals();
@@ -46,7 +47,7 @@ export class Order implements OnInit {
     }
 
     placeOrder() {
-        this.http.post('http://localhost:8080/api/orders/place', {}).subscribe({
+        this.http.post(`${environment.apiBaseUrl}/orders/place`, {}).subscribe({
             next: () => {
                 alert('Order placed successfully!');
                 this.router.navigate(['product-list']);

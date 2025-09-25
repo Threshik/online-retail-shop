@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-product-list',
@@ -31,7 +32,7 @@ export class ProductList implements OnInit {
   }
 
   getProducts() {
-    this.http.get("http://localhost:8080/api/products").subscribe({
+    this.http.get(`${environment.apiBaseUrl}/products`).subscribe({
       next: (result: any) => {
         this.productList = result;
         this.loading = false;
@@ -47,7 +48,7 @@ export class ProductList implements OnInit {
   deleteProduct(id: number) {
     const del = confirm("Are you sure to delete the product")
     if (del) {
-      this.http.delete(`http://localhost:8080/api/products/${id}`).subscribe({
+      this.http.delete(`${environment.apiBaseUrl}/products/${id}`).subscribe({
         next: () => {
           alert("The Product is deleted successfully");
           this.getProducts();
@@ -72,7 +73,7 @@ export class ProductList implements OnInit {
       return;
     }
 
-    this.http.put(`http://localhost:8080/api/products/${this.productObj.id}`, this.productObj).subscribe({
+    this.http.put(`${environment.apiBaseUrl}/products/${this.productObj.id}`, this.productObj).subscribe({
       next: (res: any) => {
         alert("The product updated successfully");
         this.isEditing = false;
@@ -99,7 +100,7 @@ export class ProductList implements OnInit {
 
   addToCart(id: number) {
     const quantity = 1;
-    this.http.post(`http://localhost:8080/api/cart/add?productId=${id}&quantity=${quantity}`, null).subscribe({
+    this.http.post(`${environment.apiBaseUrl}/cart/add?productId=${id}&quantity=${quantity}`, null).subscribe({
       next: (res: any) => {
         alert(res.message);
 
@@ -112,7 +113,7 @@ export class ProductList implements OnInit {
   }
 
   getAllCartItems() {
-    this.http.get("http://localhost:8080/api/cart").subscribe({
+    this.http.get(`${environment.apiBaseUrl}/cart`).subscribe({
       next: (res: any) => {
         this.cartItemList = res;
         this.loading = false;
