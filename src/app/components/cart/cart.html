@@ -1,11 +1,11 @@
 <div class="row">
+
+
+    @if (cartItemList.length > 0) {
     <div class="col-12 d-flex justify-content-end mb-3 gap-4">
         <button class="btn btn-outline-danger" (click)="clearCart()">Clear Cart</button>
         <button class="btn btn-outline-secondary" (click)="navigate()">Checkout</button>
     </div>
-
-    @if (cartItemList.length > 0) {
-
     @for (item of cartItemList; track $index) {
     <div class="col-md-4 mb-4">
         <div class="card h-100 shadow-sm">

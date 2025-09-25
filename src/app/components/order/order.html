@@ -1,1 +1,44 @@
-<p>order works!</p>
+<div class="container mt-5">
+    <h2 class="mb-4">Review Your Order</h2>
+
+    @if (loading) {
+    <div class="text-center my-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    } @else if (cartItems.length > 0) {
+    <div class="row">
+        @for (item of cartItems; track $index) {
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body d-flex align-items-start gap-3">
+                    <img [src]="item.product.image" [alt]="item.product.name" class="img-fluid rounded"
+                        style="width: 100px; height: 100px; object-fit: contain;" />
+
+                    <div class="flex-grow-1">
+                        <h5 class="card-title">{{ item.product.name }}</h5>
+                        <p class="mb-1"><strong>Price:</strong> ${{ item.product.price }}</p>
+                        <p class="mb-0"><strong>Quantity:</strong> {{ item.quantity }}</p>
+                        <p class="text-success fw-semibold">Subtotal: ${{ item.product.price * item.quantity }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+
+    <div class="border-top pt-4 mt-3 d-flex justify-content-end text-end">
+        <div class="w-100 w-md-50">
+            <h5>Total Quantity: <span class="text-primary">{{ totalQuantity }}</span></h5>
+            <h4>Total Price: <span class="text-success">$ {{ totalPrice.toFixed(2) }}</span></h4>
+            <button class="btn btn-success w-100 mt-3" (click)="placeOrder()">Place Order</button>
+        </div>
+    </div>
+    } @else {
+    <div class="text-center mt-5">
+        <h4>Your cart is empty</h4>
+        <button class="btn btn-secondary mt-3" (click)="goToProductList()">Continue Shopping</button>
+    </div>
+    }
+</div>

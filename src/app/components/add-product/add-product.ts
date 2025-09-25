@@ -15,7 +15,7 @@ export class AddProduct implements OnInit {
   userList: any[] = [];
   productObj: any = {
     "name": "",
-    "price": 0,
+    "price": '',
     "description": "",
     "image": ""
   }
