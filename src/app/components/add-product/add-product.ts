@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, Signal, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-product',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './add-product.html',
   styleUrl: './add-product.css'
 })
@@ -13,31 +13,29 @@ export class AddProduct implements OnInit {
   http = inject(HttpClient)
   router = inject(Router)
   userList: any[] = [];
-  productObj: any = {
-    "name": "",
-    "price": '',
-    "description": "",
-    "image": ""
-  }
+
+  productAddForm: FormGroup = new FormGroup({
+    name: new FormControl("", [Validators.required]),
+    price: new FormControl(0, [Validators.required, Validators.min(1)]),
+    description: new FormControl("", [Validators.required]),
+    image: new FormControl("", [Validators.required])
+  })
+
   loading = true;
 
   ngOnInit(): void {
     this.loading = false;
   }
 
-
-
   addProducts() {
-    this.http.post("http://localhost:8080/api/products", this.productObj).subscribe({
+    if (this.productAddForm.invalid) {
+      this.productAddForm.markAllAsTouched();
+      return;
+    }
+    const formValue = this.productAddForm.value;
+    this.http.post("http://localhost:8080/api/products", formValue).subscribe({
       next: (res: any) => {
         alert("The product added successfully");
-        this.productObj = {
-          "name": "",
-          "price": 0,
-          "description": "",
-          "image": ""
-        }
-
         //like when we add a product after adding it we get a alert and then it navigates to the product list page
         this.router.navigate(['product-list'])
 
@@ -49,12 +47,7 @@ export class AddProduct implements OnInit {
   }
 
   onReset() {
-    this.productObj = {
-      "name": "",
-      "price": 0,
-      "description": "",
-      "image": ""
-    }
+    this.productAddForm.reset();
   }
 
 
