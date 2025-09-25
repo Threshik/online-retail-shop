@@ -26,8 +26,8 @@ export class ProductList implements OnInit {
     "image": ""
   }
 
+  
   ngOnInit(): void {
-
     this.getProducts();
   }
 
