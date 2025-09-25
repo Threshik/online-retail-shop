@@ -43,20 +43,6 @@ export class ProductList implements OnInit {
     })
   }
 
-  getAllCartItems() {
-    this.http.get("http://localhost:8080/api/cart").subscribe({
-      next: (res: any) => {
-        this.cartItemList = res;
-        this.loading = false;
-
-      },
-      error: (err) => {
-        console.log('Error fetching cart items', err);
-        this.loading = false;
-      }
-
-    })
-  }
 
   deleteProduct(id: number) {
     const del = confirm("Are you sure to delete the product")
@@ -123,10 +109,21 @@ export class ProductList implements OnInit {
       }
     });
 
+  }
 
+  getAllCartItems() {
+    this.http.get("http://localhost:8080/api/cart").subscribe({
+      next: (res: any) => {
+        this.cartItemList = res;
+        this.loading = false;
 
+      },
+      error: (err) => {
+        console.log('Error fetching cart items', err);
+        this.loading = false;
+      }
 
-
+    })
   }
 }
 

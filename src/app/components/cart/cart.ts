@@ -66,15 +66,7 @@ export class Cart implements OnInit {
   navigate() {
 
     this.router.navigate(['order'])
-    this.http.delete("http://localhost:8080/api/cart/clear").subscribe({
-      next: (res: any) => {
 
-        this.showCartItems();
-      },
-      error: (err) => {
-
-      }
-    })
 
   }
 

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-order',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './order.html',
     styleUrl: './order.css'
 })
