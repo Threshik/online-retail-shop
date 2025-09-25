@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { CartItem } from '../../models/cart-item.model';
 
 @Component({
     selector: 'app-order',
@@ -15,7 +16,7 @@ export class Order implements OnInit {
     router = inject(Router)
     loading: boolean = true;
 
-    cartItems: any[] = [];
+    cartItems: CartItem[] = [];
     totalQuantity: number = 0;
     totalPrice: number = 0;
 
@@ -27,7 +28,7 @@ export class Order implements OnInit {
 
 
     loadCartItems() {
-        this.http.get(`${environment.apiBaseUrl}/cart`).subscribe({
+        this.http.get<CartItem[]>(`${environment.apiBaseUrl}/cart`).subscribe({
             next: (res: any) => {
                 this.cartItems = res;
                 this.calculateTotals();

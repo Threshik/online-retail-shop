@@ -6,7 +6,7 @@
 
 @else {
 <div class="row">
-    @for (product of productList; track product.id) {
+    @for (product of products; track product.id) {
     <div class="col-md-4 mb-4">
         <div class="card h-100 shadow-sm">
             <!-- property binding  -->
@@ -19,7 +19,7 @@
                 <p class="card-text text-truncate">{{ product.description }}</p>
                 <p class="fw-bold text-success mb-2">$ {{ product.price }}</p>
                 <div class="d-flex justify-content-between mt-auto">
-                    <button class="btn btn-secondary" (click)="addToCart(product.id)">
+                    <button class="btn btn-secondary" (click)="addToCart(product.id!)">
                         Add to Cart
                     </button>
 
@@ -29,7 +29,7 @@
                             <i class="bi bi-pencil-square" style="font-size: 1.2rem;"></i>
                         </button>
 
-                        <button class="btn btn-link text-danger p-0" title="Delete" (click)="deleteProduct(product.id)">
+                        <button class="btn btn-link text-danger p-0" title="Delete" (click)="deleteProduct(product.id!)">
                             <i class="bi bi-trash" style="font-size: 1.2rem;"></i>
                         </button>
                     </div>
@@ -58,18 +58,18 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label>Title</label>
-                        <input type="text" class="form-control" [(ngModel)]="productObj.name" name="title" required />
+                        <input type="text" class="form-control" [(ngModel)]="selectedProduct.name" name="title" required />
                     </div>
 
                     <div class="mb-3">
                         <label>Price</label>
-                        <input type="number" class="form-control" [(ngModel)]="productObj.price" name="price"
+                        <input type="number" class="form-control" [(ngModel)]="selectedProduct.price" name="price"
                             required />
                     </div>
 
                     <div class="mb-3">
                         <label>Description</label>
-                        <textarea class="form-control" [(ngModel)]="productObj.description"
+                        <textarea class="form-control" [(ngModel)]="selectedProduct.description"
                             name="description"></textarea>
                     </div>
 
@@ -77,7 +77,7 @@
 
                     <div class="mb-3">
                         <label>Image URL</label>
-                        <input type="text" class="form-control" [(ngModel)]="productObj.image" name="image" />
+                        <input type="text" class="form-control" [(ngModel)]="selectedProduct.image" name="image" />
                     </div>
                 </div>
                 <div class="modal-footer">

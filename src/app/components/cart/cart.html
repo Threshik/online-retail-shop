@@ -19,9 +19,9 @@
 
                 <div class="mt-auto d-flex align-items-center gap-2">
                     <input type="number" min="1" [(ngModel)]="item.quantity"
-                        (change)="updateQuantity(item.id, item.quantity)" style="width: 70px;"
+                        (change)="updateQuantity(item.id!, item.quantity)" style="width: 70px;"
                         class="form-control form-control-sm" />
-                    <button class="btn btn-outline-danger btn-sm" (click)="deleteCartItem(item.id)">
+                    <button class="btn btn-outline-danger btn-sm" (click)="deleteCartItem(item.id!)">
                         Remove
                     </button>
                 </div>

@@ -4,6 +4,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { Product } from '../../models/product.model';
+import { CartItem } from '../../models/cart-item.model';
 
 @Component({
   selector: 'app-product-list',
@@ -13,13 +15,15 @@ import { environment } from '../../../environments/environment';
 })
 export class ProductList implements OnInit {
   http = inject(HttpClient);
-  productList: any[] = [];
-  cartItemList: any[] = [];
+  router = inject(Router)
+
+  cartItems: CartItem[] = [];
+  products: Product[] = [];
+
   loading = true;
   isEditing = false;
-  router = inject(Router)
-  productObj: any = {
-
+  
+   selectedProduct: Product ={
     "name": "",
     "price": 0,
     "description": "",
@@ -32,9 +36,9 @@ export class ProductList implements OnInit {
   }
 
   getProducts() {
-    this.http.get(`${environment.apiBaseUrl}/products`).subscribe({
-      next: (result: any) => {
-        this.productList = result;
+    this.http.get<Product[]>(`${environment.apiBaseUrl}/products`).subscribe({
+      next: (result) => {
+        this.products = result;
         this.loading = false;
       },
       error: (err) => {
@@ -62,19 +66,19 @@ export class ProductList implements OnInit {
 
   }
 
-  selectProductForEdit(product: any) {
-    this.productObj = { ...product };
+  selectProductForEdit(product: Product) {
+    this.selectedProduct = { ...product };
     this.isEditing = true;
   }
 
   updateProduct() {
-    if (!this.productObj.id) {
+    if (!this.selectedProduct.id) {
       alert("Invalid product ID.");
       return;
     }
 
-    this.http.put(`${environment.apiBaseUrl}/products/${this.productObj.id}`, this.productObj).subscribe({
-      next: (res: any) => {
+    this.http.put(`${environment.apiBaseUrl}/products/${this.selectedProduct.id}`, this.selectedProduct).subscribe({
+      next: () => {
         alert("The product updated successfully");
         this.isEditing = false;
         this.getProducts();
@@ -84,13 +88,11 @@ export class ProductList implements OnInit {
       }
     });
 
-
-
   }
 
   closeDialog() {
     this.isEditing = false;
-    this.productObj = {
+    this.selectedProduct = {
       "name": "",
       "price": 0,
       "description": "",
@@ -100,8 +102,8 @@ export class ProductList implements OnInit {
 
   addToCart(id: number) {
     const quantity = 1;
-    this.http.post(`${environment.apiBaseUrl}/cart/add?productId=${id}&quantity=${quantity}`, null).subscribe({
-      next: (res: any) => {
+    this.http.post<{message: string}>(`${environment.apiBaseUrl}/cart/add?productId=${id}&quantity=${quantity}`, null).subscribe({
+      next: (res) => {
         alert(res.message);
 
       },
@@ -113,9 +115,9 @@ export class ProductList implements OnInit {
   }
 
   getAllCartItems() {
-    this.http.get(`${environment.apiBaseUrl}/cart`).subscribe({
-      next: (res: any) => {
-        this.cartItemList = res;
+    this.http.get<CartItem[]>(`${environment.apiBaseUrl}/cart`).subscribe({
+      next: (res) => {
+        this.cartItems = res;
         this.loading = false;
 
       },

@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { CartItem } from '../../models/cart-item.model';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,7 @@ import { environment } from '../../../environments/environment';
 export class Cart implements OnInit {
   http = inject(HttpClient)
   router = inject(Router)
-  cartItemList: any[] = [];
+  cartItemList: CartItem[] = [];
 
   ngOnInit(): void {
     this.showCartItems();

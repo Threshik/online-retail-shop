@@ -13,7 +13,7 @@ import { environment } from '../../../environments/environment';
 export class AddProduct implements OnInit {
   http = inject(HttpClient)
   router = inject(Router)
-  userList: any[] = [];
+  
 
   productAddForm: FormGroup = new FormGroup({
     name: new FormControl("", [Validators.required]),
