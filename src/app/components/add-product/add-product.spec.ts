@@ -1,5 +1,5 @@
 //this is used to write the test files for the components 
-// testbed is used to create the component and test them 
+// testbed is used to create the component and test them  - angular test environemnt
 //testing tools: jasmine(testing framework), karma(test runner)
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddProduct } from './add-product';
