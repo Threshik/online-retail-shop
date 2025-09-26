@@ -14,16 +14,16 @@ import { CartItem } from '../../models/cart-item.model';
 export class Cart implements OnInit {
   http = inject(HttpClient)
   router = inject(Router)
-  cartItemList: CartItem[] = [];
+  cartItems: CartItem[] = [];
 
   ngOnInit(): void {
     this.showCartItems();
   }
 
   showCartItems() {
-    this.http.get(`${environment.apiBaseUrl}/cart`).subscribe({
-      next: (res: any) => {
-        this.cartItemList = res;
+    this.http.get<CartItem[]>(`${environment.apiBaseUrl}/cart`).subscribe({
+      next: (res) => {
+        this.cartItems = res;
       },
       error: (err) => {
         console.log("Cart Items couldnt fetch");
@@ -44,7 +44,7 @@ export class Cart implements OnInit {
 
   deleteCartItem(id: number) {
     this.http.delete(`${environment.apiBaseUrl}/cart/${id}`).subscribe({
-      next: (response: any) => {
+      next: () => {
         alert('Cart Item deleted!')
         this.showCartItems();
       },
@@ -55,7 +55,7 @@ export class Cart implements OnInit {
 
   clearCart() {
     this.http.delete(`${environment.apiBaseUrl}/cart/clear`).subscribe({
-      next: (res: any) => {
+      next: () => {
         alert("Cart cleared Successfully")
         this.showCartItems();
       },
@@ -73,14 +73,14 @@ export class Cart implements OnInit {
   }
 
   get totalItems() {
-    return this.cartItemList.length;
+    return this.cartItems.length;
   }
 
   get totalQuantity() {
-    return this.cartItemList.reduce((sum, item) => sum + item.quantity, 0);
+    return this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
   }
 
   get totalPrice() {
-    return this.cartItemList.reduce((sum, item) => sum + item.quantity * item.product.price, 0);
+    return this.cartItems.reduce((sum, item) => sum + item.quantity * item.product.price, 0);
   }
 }

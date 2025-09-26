@@ -29,7 +29,7 @@ export class Order implements OnInit {
 
     loadCartItems() {
         this.http.get<CartItem[]>(`${environment.apiBaseUrl}/cart`).subscribe({
-            next: (res: any) => {
+            next: (res) => {
                 this.cartItems = res;
                 this.calculateTotals();
                 this.loading = false;
