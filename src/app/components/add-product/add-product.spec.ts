@@ -22,7 +22,7 @@ describe('AddProduct', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [AddProduct], // standalone component
+      imports: [AddProduct],
       providers: [
         importProvidersFrom(ReactiveFormsModule),
         provideHttpClient(),
@@ -36,15 +36,18 @@ describe('AddProduct', () => {
     httpMock = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
   });
+
   //testing whether the component is created
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
   // when the form is empty it is meant to be invalid all the details are req to be filled
   it('should have an invalid form when empty', () => {
     expect(component.productAddForm.valid).toBeFalse();
   });
-  //the form is valid when they filla all the values correctly
+
+  //the form is valid when they fill all the values correctly
   it('should have a valid form when correctly filled', () => {
     component.productAddForm.setValue({
       name: 'Phone',
@@ -54,6 +57,7 @@ describe('AddProduct', () => {
     });
     expect(component.productAddForm.valid).toBeTrue();
   });
+
   //test it calls the api when it is submitted
   it('should call API and navigate after successful product add', () => {
     component.productAddForm.setValue({
@@ -67,10 +71,11 @@ describe('AddProduct', () => {
 
     const req = httpMock.expectOne(`${environment.apiBaseUrl}/products`);
     expect(req.request.method).toBe('POST');
-    req.flush({}); // mock successful response
+    req.flush({});
 
     expect(mockRouter.navigate).toHaveBeenCalledWith(['product-list']);
   });
+
   //test case for testing whether the form is resetting thr values
   it('should reset the form', () => {
     component.productAddForm.setValue({

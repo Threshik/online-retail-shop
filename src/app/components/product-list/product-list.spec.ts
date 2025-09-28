@@ -1,23 +1,59 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 import { ProductList } from './product-list';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('ProductList', () => {
-  let component: ProductList;
-  let fixture: ComponentFixture<ProductList>;
+    let fixture: ComponentFixture<ProductList>;
+    let component: ProductList;
+    let httpTestingController: HttpTestingController;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ProductList]
-    })
-    .compileComponents();
+    const mockRouter = {
+        navigate: jasmine.createSpy('navigate')
+    };
 
-    fixture = TestBed.createComponent(ProductList);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [ProductList], // Import standalone component here
+            providers: [
+                provideHttpClient(),
+                provideHttpClientTesting(),
+                { provide: Router, useValue: mockRouter }
+            ]
+        }).compileComponents();
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+        fixture = TestBed.createComponent(ProductList);
+        component = fixture.componentInstance;
+        httpTestingController = TestBed.inject(HttpTestingController);
+    });
+
+    afterEach(() => {
+        httpTestingController.verify(); // Make sure no outstanding requests
+    });
+
+    it('should create', () => {
+        fixture.detectChanges();
+
+        const req = httpTestingController.expectOne(`${environment.apiBaseUrl}/products`);
+        req.flush([]);
+
+        expect(component).toBeTruthy();
+    });
+
+    it('should load products and set loading to false', () => {
+        fixture.detectChanges();
+
+        const mockProducts = [
+            { id: 1, name: 'Test Product', price: 10, description: '', image: '' }
+        ];
+
+        const req = httpTestingController.expectOne(`${environment.apiBaseUrl}/products`);
+        req.flush(mockProducts);
+
+        expect(component.products.length).toBe(1);
+        expect(component.loading).toBe(false);
+    });
 });
