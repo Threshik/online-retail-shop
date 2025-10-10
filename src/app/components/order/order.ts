@@ -1,45 +1,41 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { CartItem } from '../../models/cart-item.model';
+import { AuthHttpService } from '../../services/auth-http';
 
 @Component({
     selector: 'app-order',
-    imports: [],
+    imports: [CommonModule],
     templateUrl: './order.html',
-    styleUrl: './order.css'
+    styleUrls: ['./order.css']
 })
 export class Order implements OnInit {
-    http = inject(HttpClient)
-    router = inject(Router)
-    loading: boolean = true;
+    private authHttp = inject(AuthHttpService);
+    private router = inject(Router);
 
+    loading: boolean = true;
     cartItems: CartItem[] = [];
     totalQuantity: number = 0;
     totalPrice: number = 0;
 
-
     ngOnInit(): void {
-        this.loadCartItems()
-
+        this.loadCartItems();
     }
 
-
     loadCartItems() {
-        this.http.get<CartItem[]>(`${environment.apiBaseUrl}/cart`).subscribe({
+        this.authHttp.get<CartItem[]>(`${environment.apiBaseUrl}/cart`).subscribe({
             next: (res) => {
                 this.cartItems = res;
                 this.calculateTotals();
                 this.loading = false;
             },
             error: (err) => {
-                console.log("Failed to load cart items.");
+                console.log("Failed to load cart items.", err);
                 this.loading = false;
-
             }
-        })
+        });
     }
 
     calculateTotals() {
@@ -48,7 +44,7 @@ export class Order implements OnInit {
     }
 
     placeOrder() {
-        this.http.post(`${environment.apiBaseUrl}/orders/place`, {}).subscribe({
+        this.authHttp.post(`${environment.apiBaseUrl}/order/place`, {}).subscribe({
             next: () => {
                 alert('Order placed successfully!');
                 this.router.navigate(['product-list']);
@@ -60,7 +56,6 @@ export class Order implements OnInit {
     }
 
     goToProductList() {
-        this.router.navigate(['/product-list'])
+        this.router.navigate(['/product-list']);
     }
-
 }
