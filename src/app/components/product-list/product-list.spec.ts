@@ -17,7 +17,7 @@ describe('ProductList', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ProductList], // Import standalone component here
+            imports: [ProductList],
             providers: [
                 provideHttpClient(),
                 provideHttpClientTesting(),
@@ -31,7 +31,7 @@ describe('ProductList', () => {
     });
 
     afterEach(() => {
-        httpTestingController.verify(); // Make sure no outstanding requests
+        httpTestingController.verify();
     });
 
     it('should create', () => {
